@@ -11,7 +11,7 @@
     <ul>
       <% @order.line_items.each do |line_item| %>
         <div class="d-flex align-items-center mb-4">
-          <img class="img-500px me-2" src="<%= line_item.product.image %>" alt="<%= line_item.product.name %>" />
+          <img class="img-300px me-2" src="<%= line_item.product.image %>" alt="<%= line_item.product.name %>" />
           <li>
             <h5>Name: <%= line_item.product.name %></h5>
             <p>Description: <%= line_item.product.description %></p>
