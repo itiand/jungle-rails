@@ -1,11 +1,19 @@
-<h1>Login</h1>
+<div class="container my-5 align-items-center row">
+  <img class="col col-4" src="https://images.unsplash.com/photo-1503149779833-1de50ebe5f8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1035&q=80">
+  <div class="col col-6">
+    <h1>Login</h1>
+    <%= form_with url: login_path, local: true do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, id: 'email', class: "form-control" %>
+      </div>
 
-<%= form_with url: login_path, local: true do |f| %>
-  <%= f.label :email %>
-  <%= f.email_field :email, id: 'email' %>
-  
-  <%= f.label :password %>
-  <%= f.password_field :password, id: 'password' %>
-  
-  <%= f.submit "Login" %>
-<% end %>
+      <div class="mb-3">
+        <%= f.label :password, class: "form-label" %>
+        <%= f.password_field :password, id: 'password', class: "form-control" %>
+      </div>
+
+      <%= f.submit "Login", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
