@@ -3,7 +3,6 @@ class SessionsController < ApplicationController
   before_action :redirect_unless_logged_in, only: [:destroy]
 
   def new
-    puts "HERE IN SESSIONS NEW"
   end
 
   def create
@@ -13,7 +12,6 @@ class SessionsController < ApplicationController
       flash[:notice] = "Login successful!"
       redirect_to root_path
     else
-      puts "WRONG PASSWORD"
       flash.now[:alert] = "Invalid email or password"
       render :new
     end
@@ -22,7 +20,6 @@ class SessionsController < ApplicationController
   def destroy
     session[:user_id] = nil
     flash[:notice] = "Logged out!"
-    puts "LOGGED OUT!"
     redirect_to root_path
   end
 

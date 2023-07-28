@@ -10,10 +10,10 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
-      puts "Account created and stored"
+      flash[:notice] = "Sign up successful. Welcome!"
       redirect_to root_path
     else
-      flash.now[:alert] = @user.errors.full_messages.join(", ")
+      flash.now[:alert] = @user.errors.full_messages.join("| ")
       render :new
     end
   end
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   end
 
   def redirect_if_logged_in
-    if session[:user_id] # change this to your method for checking if a user is logged in
+    if session[:user_id]
       redirect_to root_path, notice: "You are already signed up and logged in!"
     end
   end
