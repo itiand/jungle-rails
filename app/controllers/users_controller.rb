@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
+      puts "Account created and stored"
       redirect_to root_path, notice: "Account Created"
     else
       flash.now[:alert] = @user.errors.full_messages.join(", ")
@@ -21,3 +22,5 @@ class UsersController < ApplicationController
     params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
   end
 end
+
+
