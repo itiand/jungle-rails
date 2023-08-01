@@ -36,7 +36,8 @@ RSpec.describe Product, type: :model do
       )
 
       expect(product.save).to be false;
-      expect(product.errors.full_messages).to include("Quantity is not a number")
+      product.valid?
+      expect(product.errors.full_messages).to include("Quantity can't be blank")
     end
 
     it 'should not save without a category' do
