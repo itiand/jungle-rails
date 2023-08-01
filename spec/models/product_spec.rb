@@ -26,5 +26,31 @@ RSpec.describe Product, type: :model do
       expect(product.save).to be false
       expect(product.errors.full_messages).to include("Price cents must be greater than 0")
     end
+
+    it 'should not save without a quantity' do
+      product = Product.new(
+        name: 'Lava Plant',
+        price: 25,
+        quantity: nil,
+        category: category
+      )
+
+      expect(product.save).to be false;
+      expect(product.errors.full_messages).to include("Quantity is not a number")
+    end
+
+    it 'should not save without a category' do
+      product = Product.new(
+        name: 'Lava Plant',
+        price: 25,
+        quantity: 20,
+        category: nil
+      )
+
+      expect(product.save).to be false
+      expect(product.errors.full_messages).to include("Category can't be blank")
+
+    end
+
   end
 end
