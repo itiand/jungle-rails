@@ -33,59 +33,59 @@ RSpec.describe User, type: :model do
       user.valid?
       expect(user.errors.full_messages).to include("Password confirmation doesn't match Password")
     end
-  end
 
-  #case sensitive of email?
-  it 'validates uniqueness of email' do
-    User.create!(
-      first_name: 'Chris',
-      last_name: 'Hawkins',
-      email: 'test4@test.com',
-      password: 'password',
-      password_confirmation: 'password'
-    )
-
-    user = User.new(
-    first_name: 'Chris',
-    last_name: 'Hawkins',
-    email: 'TEST4@TeST.com',
-    password: 'password',
-    password_confirmation: 'password'
-    )
-
-    expect(user.save).to be false
-    expect(user.errors.full_messages).to include("Email has already been taken")
-  end
-
-  #email, first name, last name
-  it 'should not save if either email, first name, last name are missing' do
-    user = User.new(
-      first_name: nil,
-      last_name: nil,
-      email: nil,
-      password: 'password',
-      password_confirmation: 'password'
-    )
-
-    expect(user.save).to be false
-    expect(user.errors.full_messages).to include(
-      "First name can't be blank",
-      "Last name can't be blank",
-      "Email can't be blank"
+    #case sensitive of email?
+    it 'validates uniqueness of email' do
+      User.create!(
+        first_name: 'Chris',
+        last_name: 'Hawkins',
+        email: 'test4@test.com',
+        password: 'password',
+        password_confirmation: 'password'
       )
-  end
 
-  it 'should not save if the password is less than 6 characters' do
-    user = User.new(
+      user = User.new(
       first_name: 'Chris',
       last_name: 'Hawkins',
-      email: 'chris@yahoo.com',
-      password: 'short',
-      password_confirmation: 'short'
-    )
+      email: 'TEST4@TeST.com',
+      password: 'password',
+      password_confirmation: 'password'
+      )
 
-    expect(user.save).to be false
-    expect(user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
+      expect(user.save).to be false
+      expect(user.errors.full_messages).to include("Email has already been taken")
+    end
+
+    #email, first name, last name
+    it 'should not save if either email, first name, last name are missing' do
+      user = User.new(
+        first_name: nil,
+        last_name: nil,
+        email: nil,
+        password: 'password',
+        password_confirmation: 'password'
+      )
+
+      expect(user.save).to be false
+      expect(user.errors.full_messages).to include(
+        "First name can't be blank",
+        "Last name can't be blank",
+        "Email can't be blank"
+        )
+    end
+
+    it 'should not save if the password is less than 6 characters' do
+      user = User.new(
+        first_name: 'Chris',
+        last_name: 'Hawkins',
+        email: 'chris@yahoo.com',
+        password: 'short',
+        password_confirmation: 'short'
+      )
+
+      expect(user.save).to be false
+      expect(user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
+    end
   end
 
   describe '.authenticate_with_credentials' do
@@ -93,11 +93,11 @@ RSpec.describe User, type: :model do
       user = User.create!(
         first_name: 'Chris',
         last_name: 'Angela',
-        email: 'aChris@aol.com',
+        email: 'ac@aol.com',
         password: 'password',
         password_confirmation: 'password'
       )
-      authenticated_user = User.authenticate_with_credentials('aChris@aol.com','password')
+      authenticated_user = User.authenticate_with_credentials('ac@aol.com','password')
       expect(authenticated_user).to eql(user)
     end
 
@@ -105,12 +105,24 @@ RSpec.describe User, type: :model do
       user = User.create!(
         first_name: 'Chris',
         last_name: 'Angela',
-        email: 'aChris@aol.com',
+        email: 'ac@aol.com',
         password: 'password',
         password_confirmation: 'password'
       )
-      authenticated_user = User.authenticate_with_credentials('aChris@aol.com', 'somepassword')
+      authenticated_user = User.authenticate_with_credentials('ac@aol.com', 'somepassword')
       expect(authenticated_user).to eql(nil)
+    end
+
+    it 'authenticates regardless of trailing spaces or casing on email' do
+      user = User.create!(
+        first_name: 'Chris',
+        last_name: 'Angela',
+        email: 'ac@aol.com',
+        password: 'password',
+        password_confirmation: 'password'
+      )
+      authenticated_user = User.authenticate_with_credentials(' ac@aoL.cOm  ', 'password')
+      expect(authenticated_user).to eql(user)
     end
   end
 end
