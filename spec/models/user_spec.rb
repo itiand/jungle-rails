@@ -75,4 +75,42 @@ RSpec.describe User, type: :model do
       )
   end
 
+  it 'should not save if the password is less than 6 characters' do
+    user = User.new(
+      first_name: 'Chris',
+      last_name: 'Hawkins',
+      email: 'chris@yahoo.com',
+      password: 'short',
+      password_confirmation: 'short'
+    )
+
+    expect(user.save).to be false
+    expect(user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
+  end
+
+  describe '.authenticate_with_credentials' do
+    it 'authenticates user with correct credentials' do
+      user = User.create!(
+        first_name: 'Chris',
+        last_name: 'Angela',
+        email: 'aChris@aol.com',
+        password: 'password',
+        password_confirmation: 'password'
+      )
+      authenticated_user = User.authenticate_with_credentials('aChris@aol.com','password')
+      expect(authenticated_user).to eql(user)
+    end
+
+    it 'does not authenticate with incorrect credentials' do
+      user = User.create!(
+        first_name: 'Chris',
+        last_name: 'Angela',
+        email: 'aChris@aol.com',
+        password: 'password',
+        password_confirmation: 'password'
+      )
+      authenticated_user = User.authenticate_with_credentials('aChris@aol.com', 'somepassword')
+      expect(authenticated_user).to eql(nil)
+    end
+  end
 end
