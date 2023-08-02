@@ -8,4 +8,8 @@ class Product < ApplicationRecord
   validates :price_cents, numericality: { greater_than: 0 }
   validates :quantity, presence: true
   validates :category, presence: true
+
+  def sold_out?
+    quantity.zero?
+  end
 end
